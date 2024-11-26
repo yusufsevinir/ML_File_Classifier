@@ -1,0 +1,13 @@
+{
+    "transaction_descriptions": [
+        "GROCERY STORE PURCHASE",
+        "SALARY DEPOSIT",
+        "ATM WITHDRAWAL",
+        "ONLINE TRANSFER",
+        "UTILITY PAYMENT",
+        "RESTAURANT CHARGE",
+        "MOBILE PAYMENT",
+        "SUBSCRIPTION PAYMENT",
+        "INSURANCE PREMIUM"
+    ]
+} 

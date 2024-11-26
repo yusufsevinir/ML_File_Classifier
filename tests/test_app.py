@@ -1,7 +1,6 @@
-from io import BytesIO
-
 import pytest
-from src.app import app, allowed_file
+from io import BytesIO
+from src.app import app
 
 @pytest.fixture
 def client():
@@ -9,30 +8,37 @@ def client():
     with app.test_client() as client:
         yield client
 
+def create_test_file(content, filename):
+    return (BytesIO(content), filename)
 
-@pytest.mark.parametrize("filename, expected", [
-    ("file.pdf", True),
-    ("file.png", True),
-    ("file.jpg", True),
-    ("file.txt", False),
-    ("file", False),
-])
-def test_allowed_file(filename, expected):
-    assert allowed_file(filename) == expected
-
-def test_no_file_in_request(client):
+def test_classify_file_no_file(client):
     response = client.post('/classify_file')
     assert response.status_code == 400
+    assert b"No file part in the request" in response.data
 
-def test_no_selected_file(client):
-    data = {'file': (BytesIO(b""), '')}  # Empty filename
-    response = client.post('/classify_file', data=data, content_type='multipart/form-data')
+def test_classify_file_empty_filename(client):
+    test_file = create_test_file(b"test content", "")
+    response = client.post('/classify_file', 
+                         data={'file': test_file})
     assert response.status_code == 400
+    assert b"No selected file" in response.data
 
-def test_success(client, mocker):
-    mocker.patch('src.app.classify_file', return_value='test_class')
-
-    data = {'file': (BytesIO(b"dummy content"), 'file.pdf')}
-    response = client.post('/classify_file', data=data, content_type='multipart/form-data')
+def test_classify_file_success(client):
+    test_file = create_test_file(b"test content", "test.txt")
+    response = client.post('/classify_file',
+                         data={'file': (BytesIO(b"test content"), "test.txt")})
     assert response.status_code == 200
-    assert response.get_json() == {"file_class": "test_class"}
+    assert "file_class" in response.get_json()
+
+def test_classify_file_server_error(client, monkeypatch):
+    # Mock classifier to raise an exception
+    def mock_classify(*args):
+        raise Exception("Test error")
+    
+    monkeypatch.setattr("src.app.classifier.classify", mock_classify)
+    
+    test_file = create_test_file(b"test content", "test.txt")
+    response = client.post('/classify_file',
+                         data={'file': (BytesIO(b"test content"), "test.txt")})
+    assert response.status_code == 500
+    assert b"Internal server error" in response.data

@@ -1,0 +1,10 @@
+{
+    "license_classes": ["A", "B", "C", "D", "E"],
+    "restrictions": [
+        "NONE",
+        "CORRECTIVE LENSES",
+        "AUTOMATIC TRANSMISSION ONLY",
+        "DAYLIGHT DRIVING ONLY",
+        "NO HIGHWAY DRIVING"
+    ]
+} 

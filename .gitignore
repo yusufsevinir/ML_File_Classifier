@@ -2,5 +2,8 @@ venv
 .DS_Store
 .idea
 .vscode
-__pycache__
+# Pytest cache
+.pytest_cache/
+__pycache__/
 *.pyc
+.coverage
