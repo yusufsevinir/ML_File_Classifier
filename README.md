@@ -1,9 +1,9 @@
 
-# Heron File Classifier
+# Machine Learning File Classifier
 
 ## Overview
 
-Welcome to the Heron File Classifier project! This application is designed to classify files based on their content rather than just their filenames. It supports various file types and uses both rule-based and machine learning classifiers to enhance accuracy. The classifier is structured to handle large volumes of files efficiently, making it scalable and suitable for production environments.
+Welcome to the ML File Classifier project! This application is designed to classify files based on their content rather than just their filenames. It supports various file types and uses both rule-based and machine learning classifiers to enhance accuracy. The classifier is structured to handle large volumes of files efficiently, making it scalable and suitable for production environments.
 
 ## Features
 
